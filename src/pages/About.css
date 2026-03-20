@@ -1,0 +1,247 @@
+/* ========== ABOUT HERO ========== */
+.about-hero__content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+  margin-top: 2rem;
+  align-items: start;
+}
+
+.about-hero__text p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.about-hero__highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.about-hero__highlight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+}
+
+.about-hero__highlight-icon {
+  font-size: 1.5rem;
+}
+
+.about-hero__highlight-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* ========== SKILLS ========== */
+.skills-section__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.skills-section__category {
+  padding: 1.5rem;
+}
+
+.skills-section__category-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: var(--accent-tertiary);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+}
+
+.skills-section__bars {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skill-bar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.skill-bar__name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.skill-bar__level {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.skill-bar__track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.skill-bar__fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 6px;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* ========== TIMELINE ========== */
+.timeline {
+  position: relative;
+  margin-top: 2.5rem;
+  padding-left: 2.5rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary), transparent);
+}
+
+.timeline__item {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.timeline__dot {
+  position: absolute;
+  left: -2.5rem;
+  top: 1.5rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  border: 3px solid var(--bg-primary);
+  box-shadow: 0 0 12px var(--accent-glow);
+  transform: translateX(-6px);
+}
+
+.timeline__card {
+  padding: 1.5rem;
+}
+
+.timeline__period {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent-tertiary);
+}
+
+.timeline__role {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+}
+
+.timeline__company {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.timeline__desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-top: 0.5rem;
+}
+
+.timeline__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+/* ========== EDUCATION ========== */
+.education-section__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.education-card {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.education-card__badge {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.education-card__degree {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.education-card__institution {
+  font-size: 0.9rem;
+  color: var(--accent-tertiary);
+}
+
+.education-card__location {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.education-card__period {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+/* ========== CERTIFICATIONS ========== */
+.certs-section__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.cert-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.cert-badge__icon {
+  font-size: 1.2rem;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .about-hero__content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .skills-section__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .education-section__grid {
+    grid-template-columns: 1fr;
+  }
+}
