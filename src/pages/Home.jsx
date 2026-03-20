@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
 import { gsap } from 'gsap'
 import PageTransition from '../components/PageTransition.jsx'
-import ProjectCard from '../components/ProjectCard.jsx'
+import ScrollScaleCards from '../components/ScrollScaleCards.jsx'
 import { projects, experience, skills, socialLinks } from '../data/projects'
 import './Home.css'
 
@@ -272,11 +272,7 @@ export default function Home() {
             A selection of my most impactful work in AI, ML, and data science.
           </p>
 
-          <div className="featured__grid">
-            {featured.map((project, i) => (
-              <ProjectCard key={project.id} project={project} index={i} />
-            ))}
-          </div>
+          <ScrollScaleCards projects={featured} label="Featured" />
 
           <div className="featured__cta">
             <Link to="/projects" className="btn btn-outline">
