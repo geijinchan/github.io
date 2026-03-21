@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import PageTransition from '../components/PageTransition.jsx'
+import HorizontalTimeline from '../components/HorizontalTimeline.jsx'
 import {
   experience,
   education,
@@ -124,35 +125,8 @@ export default function About() {
           <h2 className="section-title">
             Work <span className="gradient-text">Experience</span>
           </h2>
-
-          <div className="timeline">
-            {experience.map((exp, i) => (
-              <motion.div
-                key={exp.id}
-                className="timeline__item"
-                initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ delay: 0.1, duration: 0.6 }}
-              >
-                <div className="timeline__dot" />
-                <div className="timeline__card glass-card">
-                  <span className="timeline__period">{exp.period}</span>
-                  <h3 className="timeline__role">{exp.role}</h3>
-                  <p className="timeline__company">{exp.company}</p>
-                  <p className="timeline__desc">{exp.description}</p>
-                  <div className="timeline__tags">
-                    {exp.technologies.map((t) => (
-                      <span key={t} className="tag">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </div>
+        <HorizontalTimeline items={experience} />
       </section>
 
       {/* ── Education ── */}

@@ -4,10 +4,6 @@ import './ScrollScaleCards.css'
 
 const COLOR_VARIANTS = ['green', 'cyan', 'rose', 'violet', 'amber', 'emerald']
 
-function lerp(a, b, t) {
-  return a + (b - a) * Math.max(0, Math.min(1, t))
-}
-
 function GithubIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -17,31 +13,24 @@ function GithubIcon() {
   )
 }
 
-/* ── Single card — mounts tilt, stores its own DOM ref ── */
+/* ── Single card with vanilla-tilt ── */
 function ProjectCard({ project, index, color, onMount }) {
   const ref = useRef(null)
 
   useEffect(() => {
     const node = ref.current
     if (!node) return
-
-    // Tell parent our DOM node immediately after mount
     onMount(index, node)
-
     VanillaTilt.init(node, {
-      max: 14,
+      max: 10,
       speed: 400,
       glare: true,
-      'max-glare': 0.22,
+      'max-glare': 0.18,
       scale: 1.02,
-      perspective: 800,
+      perspective: 900,
     })
-
-    return () => {
-      node.vanillaTilt?.destroy()
-      onMount(index, null)
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => { node.vanillaTilt?.destroy(); onMount(index, null) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const padStr = String(index + 1).padStart(2, '0')
@@ -49,22 +38,18 @@ function ProjectCard({ project, index, color, onMount }) {
   return (
     <div ref={ref} className={`ssc__card ssc__card--${color}`}>
       <span className="ssc__card-ghost">{padStr}</span>
-
       <div className="ssc__card-header">
         <span className="ssc__card-tag">{padStr} / Project</span>
         <span className="ssc__card-icon">{project.icon}</span>
       </div>
-
       <h3 className="ssc__card-title">{project.title}</h3>
       <p className="ssc__card-subtitle">{project.subtitle}</p>
       <p className="ssc__card-desc">{project.description}</p>
-
       <div className="ssc__card-tags">
         {project.tags.slice(0, 5).map((tag) => (
           <span key={tag} className="ssc__tag">{tag}</span>
         ))}
       </div>
-
       {project.github && (
         <a href={project.github} target="_blank" rel="noopener noreferrer"
           className="ssc__card-link">
@@ -77,12 +62,11 @@ function ProjectCard({ project, index, color, onMount }) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   SINGLE-COLUMN  (Projects page)
-   Self-contained scroll box, all N cards one per segment.
+   SINGLE-COLUMN  (Projects page) — scroll-box mode
 ──────────────────────────────────────────────────────────── */
 function SingleColumnScroll({ projects, label }) {
-  const scrollRef  = useRef(null)
-  const cardEls    = useRef({})         // { index -> DOM node }
+  const scrollRef   = useRef(null)
+  const cardEls     = useRef({})
   const progressRef = useRef(null)
   const counterRef  = useRef(null)
   const SEG = 420
@@ -95,33 +79,31 @@ function SingleColumnScroll({ projects, label }) {
   const onScroll = useCallback(() => {
     const sc = scrollRef.current
     if (!sc) return
-    const scrollTop  = sc.scrollTop
-    const scrollH    = sc.scrollHeight - sc.clientHeight
-    const progress   = scrollH > 0 ? scrollTop / scrollH : 0
-    const count      = projects.length
-    const OFFSET     = 60
+    const st  = sc.scrollTop
+    const sh  = sc.scrollHeight - sc.clientHeight
+    if (progressRef.current) progressRef.current.style.width = `${sh > 0 ? st / sh * 100 : 0}%`
 
-    if (progressRef.current)
-      progressRef.current.style.width = `${progress * 100}%`
+    const count  = projects.length
+    const OFFSET = 60
 
     Object.entries(cardEls.current).forEach(([iStr, card]) => {
       if (!card) return
       const i = Number(iStr)
-      const t = (scrollTop - OFFSET - i * SEG) / SEG
+      const t = (st - OFFSET - i * SEG) / SEG
       let scale, opacity
 
       if (i === 0) {
-        scale   = lerp(1.1, 0.9, t)
-        opacity = lerp(1,   0.1, Math.max(0, t - 0.35) * 3)
+        scale   = 1 + Math.max(0, Math.min(0.1, 0.1 - t * 0.1)) - Math.max(0, t * 0.12)
+        opacity = Math.max(0.15, 1 - Math.max(0, t - 0.35) * 3)
       } else if (i === count - 1) {
         const enter = Math.max(0, Math.min(1, t + 1))
-        scale   = lerp(1.14, 1.0, enter)
-        opacity = lerp(0,    1,   enter)
+        scale   = 1.14 - enter * 0.14
+        opacity = enter
       } else {
         const enter = Math.max(0, Math.min(1, t + 1))
         const exit  = Math.max(0, Math.min(1, t))
-        scale   = lerp(lerp(1.14, 1.0, enter), 0.9,  exit)
-        opacity = lerp(lerp(0,    1,   enter), 0.1, Math.max(0, exit - 0.35) * 3)
+        scale   = (1.14 - enter * 0.14) * (1 - exit * 0.12)
+        opacity = Math.max(0, enter - Math.max(0, exit - 0.35) * 3)
       }
 
       card.style.transform = `scale(${scale})`
@@ -129,8 +111,7 @@ function SingleColumnScroll({ projects, label }) {
     })
 
     if (counterRef.current) {
-      const idx = Math.min(count, Math.max(1,
-        Math.floor((scrollTop - OFFSET) / SEG) + 1))
+      const idx = Math.min(count, Math.max(1, Math.floor((st - OFFSET) / SEG) + 1))
       counterRef.current.textContent = `${idx} / ${count}`
     }
   }, [projects])
@@ -155,24 +136,18 @@ function SingleColumnScroll({ projects, label }) {
         <span className="ssc__label">⬡ {label}</span>
         <span className="ssc__hint">↓ scroll to explore</span>
       </div>
-
       <div className="ssc__scroll" ref={scrollRef}>
         <div className="ssc__spacer" />
         <div style={{ height: trackH, position: 'relative' }}>
           {projects.map((p, i) => (
             <div key={p.id} className="ssc__card-wrap" style={{ top: i * SEG }}>
-              <ProjectCard
-                project={p}
-                index={i}
-                color={COLOR_VARIANTS[i % COLOR_VARIANTS.length]}
-                onMount={onMount}
-              />
+              <ProjectCard project={p} index={i}
+                color={COLOR_VARIANTS[i % COLOR_VARIANTS.length]} onMount={onMount} />
             </div>
           ))}
         </div>
         <div className="ssc__spacer" />
       </div>
-
       <div className="ssc__progress">
         <div className="ssc__progress-fill" ref={progressRef} />
       </div>
@@ -182,69 +157,64 @@ function SingleColumnScroll({ projects, label }) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   TWO-COLUMN  (Featured / Home page)
-   Uses the PAGE scroll (window). Cards arranged in pairs,
-   each pair stacks together as you scroll.
+   TWO-COLUMN STICKY STACKING  (Home page)
+   Like nikolaradeski.com — each pair stacks ON TOP of the
+   previous as you scroll. Pure CSS sticky positioning with
+   scale/opacity driven by scroll position.
 ──────────────────────────────────────────────────────────── */
-function TwoColumnScroll({ projects }) {
-  // Group into pairs [ [p0,p1], [p2,p3], ... ]
+function TwoColumnStack({ projects }) {
   const pairs = []
   for (let i = 0; i < projects.length; i += 2)
     pairs.push(projects.slice(i, i + 2))
 
-  // One DOM ref per card
-  const cardEls = useRef({})
-  // One wrapper ref per pair (for sticky positioning)
-  const pairWrapRefs = useRef({})
-  const containerRef = useRef(null)
-  const SEG = 480        // scroll distance per pair
-  const CARD_SEG = 480   // same, cards in a pair move together
+  const trackRef  = useRef(null)
+  const pairRefs  = useRef([])
+  const cardEls   = useRef({})
+  const SEG       = 560   // scroll pixels per pair transition
+  const TOP_STACK = 60    // how much each pair peeks above the next
 
-  const onMount = useCallback((i, node) => {
-    if (node) cardEls.current[i] = node
-    else delete cardEls.current[i]
+  const onMount = useCallback((globalIdx, node) => {
+    if (node) cardEls.current[globalIdx] = node
+    else delete cardEls.current[globalIdx]
   }, [])
 
   const onScroll = useCallback(() => {
-    const container = containerRef.current
-    if (!container) return
-    const rect = container.getBoundingClientRect()
-    // scrolled distance inside this section (relative to the top of the section)
+    const track = trackRef.current
+    if (!track) return
+    const rect    = track.getBoundingClientRect()
     const scrolled = Math.max(0, -rect.top)
-    const OFFSET = 0
 
-    projects.forEach((_, i) => {
-      const card = cardEls.current[i]
-      if (!card) return
+    pairs.forEach((pair, pi) => {
+      // How far into this pair's segment are we?
+      const t = (scrolled - pi * SEG) / SEG   // -1..∞, active at 0..1
 
-      const pairIdx = Math.floor(i / 2)
-      const t = (scrolled - OFFSET - pairIdx * SEG) / CARD_SEG
+      pair.forEach((_, j) => {
+        const globalIdx = pi * 2 + j
+        const card = cardEls.current[globalIdx]
+        if (!card) return
 
-      let scale, opacity
-      const isLastPair = pairIdx === pairs.length - 1
+        let scale, translateY
 
-      if (pairIdx === 0 && pairs.length === 1) {
-        // only one pair
-        scale   = lerp(1.06, 1.0, Math.max(0, Math.min(1, t)))
-        opacity = 1
-      } else if (pairIdx === 0) {
-        scale   = lerp(1.08, 0.9,  Math.max(0, Math.min(1, t)))
-        opacity = lerp(1,    0.15, Math.max(0, t - 0.4) * 3)
-      } else if (isLastPair) {
-        const enter = Math.max(0, Math.min(1, t + 1))
-        scale   = lerp(1.12, 1.0, enter)
-        opacity = lerp(0,    1,   enter)
-      } else {
-        const enter = Math.max(0, Math.min(1, t + 1))
-        const exit  = Math.max(0, Math.min(1, t))
-        scale   = lerp(lerp(1.12, 1.0, enter), 0.9,  exit)
-        opacity = lerp(lerp(0,    1,   enter), 0.15, Math.max(0, exit - 0.4) * 3)
-      }
+        if (pi === 0) {
+          // First pair: starts normal, shrinks as next pair comes in
+          const shrink = Math.max(0, Math.min(1, t))
+          scale      = 1 - shrink * 0.07
+          translateY = 0
+        } else {
+          // Other pairs: start from below, slide up into place
+          const enter = Math.max(0, Math.min(1, t + 1))
+          const shrink = Math.max(0, Math.min(1, t))
+          const yStart = 80   // pixels below
+          translateY = yStart * (1 - enter)
+          scale      = 1 - shrink * 0.07
+        }
 
-      card.style.transform = `scale(${scale})`
-      card.style.opacity   = opacity
+        card.style.transform = `translateY(${translateY}px) scale(${scale})`
+        card.style.opacity   = pi === 0 ? 1
+          : Math.max(0, Math.min(1, (t + 1) * 2))
+      })
     })
-  }, [projects, pairs.length])
+  }, [pairs])
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -252,50 +222,41 @@ function TwoColumnScroll({ projects }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [onScroll])
 
-  // Total height of the scroll track = pairs * SEG + viewport for last pair
-  const trackH = pairs.length * SEG + 560
+  // Total track height: enough scroll space for all pair transitions
+  const trackH = pairs.length * SEG + 600
 
   return (
-    <div
-      ref={containerRef}
-      className="ssc__two-col-container"
-      style={{ height: trackH }}
-    >
-      {/* Sticky viewport that stays in view while scrolling through */}
-      <div className="ssc__two-col-sticky">
-        {/* Pair wrappers — all live in the same sticky area, positioned by transform */}
-        <div className="ssc__two-col-grid">
-          {pairs.map((pair, pairIdx) => (
-            <div
-              key={pairIdx}
-              ref={(el) => { pairWrapRefs.current[pairIdx] = el }}
-              className="ssc__two-col-pair"
-            >
-              {pair.map((project, j) => {
-                const globalIdx = pairIdx * 2 + j
-                const color = COLOR_VARIANTS[globalIdx % COLOR_VARIANTS.length]
-                return (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    index={globalIdx}
-                    color={color}
-                    onMount={onMount}
-                  />
-                )
-              })}
-              {/* Fill empty slot if odd number of projects */}
-              {pair.length === 1 && <div className="ssc__card-placeholder" />}
-            </div>
-          ))}
+    <div ref={trackRef} className="ssc__stack-track" style={{ height: trackH }}>
+      {pairs.map((pair, pi) => (
+        <div
+          key={pi}
+          className="ssc__stack-row"
+          style={{ top: pi * TOP_STACK }}  // sticky top offset creates peek effect
+        >
+          <div className="ssc__stack-pair">
+            {pair.map((project, j) => {
+              const globalIdx = pi * 2 + j
+              const color = COLOR_VARIANTS[globalIdx % COLOR_VARIANTS.length]
+              return (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={globalIdx}
+                  color={color}
+                  onMount={onMount}
+                />
+              )
+            })}
+            {pair.length === 1 && <div className="ssc__stack-ghost-card" />}
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   )
 }
 
 /* ── Public API ── */
 export default function ScrollScaleCards({ projects, label = 'Portfolio', columns = 1 }) {
-  if (columns === 2) return <TwoColumnScroll projects={projects} />
+  if (columns === 2) return <TwoColumnStack projects={projects} />
   return <SingleColumnScroll projects={projects} label={label} />
 }

@@ -1,9 +1,40 @@
+import { useState, useRef } from 'react'
+import emailjs from '@emailjs/browser'
 import { motion } from 'framer-motion'
 import PageTransition from '../components/PageTransition.jsx'
 import { socialLinks } from '../data/projects'
 import './Contact.css'
 
+const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID  || ''
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || ''
+const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  || ''
+
 export default function Contact() {
+  const formRef = useRef(null)
+  const [status, setStatus] = useState('idle')   // idle | sending | sent | error
+  const [fields, setFields] = useState({ name: '', email: '', phone: '', message: '' })
+
+  function onChange(e) {
+    setFields((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  async function onSubmit(e) {
+    e.preventDefault()
+    setStatus('sending')
+    try {
+      await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        EMAILJS_PUBLIC_KEY
+      )
+      setStatus('sent')
+      setFields({ name: '', email: '', phone: '', message: '' })
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
     <PageTransition>
       <section className="contact-page section">
@@ -17,7 +48,7 @@ export default function Contact() {
           </p>
 
           <div className="contact-page__grid">
-            {/* Contact cards */}
+            {/* Contact info cards */}
             <div className="contact-page__cards">
               <motion.a
                 href={`mailto:${socialLinks.email}`}
@@ -33,26 +64,12 @@ export default function Contact() {
                 <p className="contact-card__value">{socialLinks.email}</p>
               </motion.a>
 
-              <motion.a
-                href={`tel:${socialLinks.phone}`}
-                className="contact-card glass-card"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1, duration: 0.5 }}
-                whileHover={{ y: -4 }}
-              >
-                <div className="contact-card__icon">📱</div>
-                <h3 className="contact-card__title">Phone</h3>
-                <p className="contact-card__value">+91 6386373320</p>
-              </motion.a>
-
               <motion.div
                 className="contact-card glass-card"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.2, duration: 0.5 }}
+                transition={{ delay: 0.1, duration: 0.5 }}
               >
                 <div className="contact-card__icon">📍</div>
                 <h3 className="contact-card__title">Location</h3>
@@ -67,7 +84,7 @@ export default function Contact() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.3, duration: 0.5 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
                 whileHover={{ y: -4 }}
               >
                 <div className="contact-card__icon">
@@ -80,38 +97,89 @@ export default function Contact() {
               </motion.a>
             </div>
 
-            {/* CTA */}
+            {/* Contact form */}
             <motion.div
-              className="contact-page__cta glass-card"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              className="contact-form-wrap glass-card"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              transition={{ duration: 0.6 }}
             >
-              <div className="contact-cta__icon">🚀</div>
-              <h3 className="contact-cta__title">
-                Ready to build something amazing?
-              </h3>
-              <p className="contact-cta__desc">
-                Whether you need an AI-powered product, an ML pipeline, or a
-                data science consultant — let's chat!
-              </p>
-              <div className="contact-cta__actions">
-                <a
-                  href={`mailto:${socialLinks.email}?subject=Let's%20Connect`}
-                  className="btn btn-primary"
+              <h3 className="contact-form__title">Send a Message</h3>
+              <p className="contact-form__sub">I'll get back to you within 24 hours.</p>
+
+              <form ref={formRef} className="contact-form" onSubmit={onSubmit}>
+                <div className="contact-form__row">
+                  <div className="contact-form__field">
+                    <label htmlFor="cf-name">Name</label>
+                    <input
+                      id="cf-name"
+                      type="text"
+                      name="name"
+                      placeholder="Your name"
+                      value={fields.name}
+                      onChange={onChange}
+                      required
+                    />
+                  </div>
+                  <div className="contact-form__field">
+                    <label htmlFor="cf-email">Email</label>
+                    <input
+                      id="cf-email"
+                      type="email"
+                      name="email"
+                      placeholder="your@email.com"
+                      value={fields.email}
+                      onChange={onChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="contact-form__field">
+                  <label htmlFor="cf-phone">Phone <span className="optional">(optional)</span></label>
+                  <input
+                    id="cf-phone"
+                    type="tel"
+                    name="phone"
+                    placeholder="+91 xxxxxxxxxx"
+                    value={fields.phone}
+                    onChange={onChange}
+                  />
+                </div>
+
+                <div className="contact-form__field">
+                  <label htmlFor="cf-message">Message</label>
+                  <textarea
+                    id="cf-message"
+                    name="message"
+                    rows={5}
+                    placeholder="Tell me about your project or opportunity..."
+                    value={fields.message}
+                    onChange={onChange}
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary contact-form__btn"
+                  disabled={status === 'sending'}
                 >
-                  Send Email
-                </a>
-                <a
-                  href="./March2026.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-outline"
-                >
-                  Download Resume
-                </a>
-              </div>
+                  {status === 'sending' ? 'Sending…' : 'Send Message →'}
+                </button>
+
+                {status === 'sent' && (
+                  <p className="contact-form__feedback contact-form__feedback--ok">
+                    ✅ Message sent! I'll reply soon.
+                  </p>
+                )}
+                {status === 'error' && (
+                  <p className="contact-form__feedback contact-form__feedback--err">
+                    ⚠️ Something went wrong. Email me directly at {socialLinks.email}
+                  </p>
+                )}
+              </form>
             </motion.div>
           </div>
         </div>
