@@ -293,3 +293,50 @@
   .ssc__card-wrap { height: 380px; }
   .ssc__card { width: 260px; padding: 20px; }
 }
+
+/* ========== TWO-COLUMN SCROLL-SCALE (Home page) ========== */
+.ssc__two-col-container {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+/* Sticky viewport — remains visible while scrolling through the track */
+.ssc__two-col-sticky {
+  position: sticky;
+  top: 100px;            /* below navbar */
+  padding: 2rem 0;
+}
+
+/* 2-column grid of cards */
+.ssc__two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Each pair sits on top of the previous (absolute stacking) */
+.ssc__two-col-pair {
+  display: contents; /* children go directly into the grid */
+}
+
+/* In two-col mode cards fill their grid cell rather than being fixed-width */
+.ssc__two-col-grid .ssc__card {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+
+
+
+/* ── Two-col responsive ── */
+@media (max-width: 768px) {
+  .ssc__two-col-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ssc__two-col-sticky {
+    top: 80px;
+  }
+}
+

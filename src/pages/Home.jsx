@@ -272,7 +272,7 @@ export default function Home() {
             A selection of my most impactful work in AI, ML, and data science.
           </p>
 
-          <ScrollScaleCards projects={featured} label="Featured" />
+          <ScrollScaleCards projects={featured} columns={2} />
 
           <div className="featured__cta">
             <Link to="/projects" className="btn btn-outline">

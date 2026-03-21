@@ -1,0 +1,274 @@
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #050508; color: #e8e8f0; font-family: 'Space Mono', monospace; }
+  
+  .demo-wrapper {
+    background: #050508;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .demo-label {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(5,5,8,0.9);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .demo-label span {
+    font-size: 11px;
+    color: #7effa0;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .scroll-hint {
+    font-size: 11px;
+    color: #6b6b80;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .scroll-container {
+    height: 420px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    position: relative;
+  }
+  .scroll-container::-webkit-scrollbar { width: 3px; }
+  .scroll-container::-webkit-scrollbar-track { background: #0d0d14; }
+  .scroll-container::-webkit-scrollbar-thumb { background: #7effa0; border-radius: 2px; }
+
+  .spacer { height: 60px; }
+
+  .sticky-section {
+    position: sticky;
+    top: 0;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .cards-track {
+    height: 1400px;
+    position: relative;
+  }
+
+  .card-wrap {
+    position: sticky;
+    top: 0;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card {
+    width: 320px;
+    border-radius: 16px;
+    padding: 28px;
+    transform-origin: center center;
+    will-change: transform, opacity;
+    border: 1px solid rgba(255,255,255,0.08);
+    position: absolute;
+    transition: none;
+  }
+
+  .card-1 {
+    background: linear-gradient(135deg, #1a2a1a, #0d1f1a);
+    border-color: rgba(126,255,160,0.2);
+  }
+  .card-2 {
+    background: linear-gradient(135deg, #1a1a2e, #0d0d2a);
+    border-color: rgba(74,240,200,0.2);
+  }
+  .card-3 {
+    background: linear-gradient(135deg, #2a1a1a, #1f0d0d);
+    border-color: rgba(255,126,126,0.2);
+  }
+
+  .card-tag {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #7effa0;
+    margin-bottom: 14px;
+  }
+  .card-2 .card-tag { color: #4af0c8; }
+  .card-3 .card-tag { color: #ff7e7e; }
+
+  .card-title {
+    font-family: 'Syne', 'Arial Black', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: #6b6b80;
+    line-height: 1.6;
+    font-family: sans-serif;
+    margin-bottom: 18px;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tag-pill {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(126,255,160,0.1);
+    color: #7effa0;
+    letter-spacing: 0.06em;
+  }
+  .card-2 .tag-pill { background: rgba(74,240,200,0.1); color: #4af0c8; }
+  .card-3 .tag-pill { background: rgba(255,126,126,0.1); color: #ff7e7e; }
+
+  .progress-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: rgba(255,255,255,0.06);
+  }
+  .progress-fill {
+    height: 100%;
+    background: #7effa0;
+    width: 0%;
+    transition: width 0.05s linear;
+  }
+
+  .card-counter {
+    position: absolute;
+    bottom: 14px;
+    right: 20px;
+    font-size: 10px;
+    color: #3a3a50;
+    letter-spacing: 0.1em;
+  }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Space+Mono&display=swap" rel="stylesheet">
+
+<div class="demo-wrapper">
+  <div class="demo-label">
+    <span>⬡ scroll scale demo</span>
+    <span class="scroll-hint">↓ scroll inside to see effect</span>
+  </div>
+
+  <div class="scroll-container" id="sc">
+    <div class="spacer"></div>
+
+    <div style="height:1200px; position:relative;">
+      <div class="card-wrap" id="cw1">
+        <div class="card card-1" id="c1">
+          <div class="card-tag">01 / Project</div>
+          <div class="card-title">Multimodal RAG System</div>
+          <div class="card-desc">Processes video, audio & text using CLIP, Whisper, FAISS for efficient multimodal retrieval.</div>
+          <div class="card-tags">
+            <span class="tag-pill">CLIP</span>
+            <span class="tag-pill">Whisper</span>
+            <span class="tag-pill">FAISS</span>
+            <span class="tag-pill">LLaVA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-wrap" id="cw2" style="top:400px;">
+        <div class="card card-2" id="c2">
+          <div class="card-tag">02 / Project</div>
+          <div class="card-title">RAG From Scratch — LLaMA 3</div>
+          <div class="card-desc">GPU-accelerated RAG system with Docker, PyTorch, Streamlit. Containerized pipeline for semantic search.</div>
+          <div class="card-tags">
+            <span class="tag-pill">PyTorch</span>
+            <span class="tag-pill">Docker</span>
+            <span class="tag-pill">LLaMA 3</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-wrap" id="cw3" style="top:800px;">
+        <div class="card card-3" id="c3">
+          <div class="card-tag">03 / Project</div>
+          <div class="card-title">MLOps Credit Card Pipeline</div>
+          <div class="card-desc">End-to-end MLOps on AWS. Data extraction → validation → training → eval. Published in IEEE Xplore.</div>
+          <div class="card-tags">
+            <span class="tag-pill">AWS</span>
+            <span class="tag-pill">SageMaker</span>
+            <span class="tag-pill">CI/CD</span>
+            <span class="tag-pill">IEEE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+  <div class="card-counter" id="cc">1 / 3</div>
+</div>
+
+<script>
+const sc = document.getElementById('sc');
+const cards = [
+  document.getElementById('c1'),
+  document.getElementById('c2'),
+  document.getElementById('c3')
+];
+const pf = document.getElementById('pf');
+const cc = document.getElementById('cc');
+
+function lerp(a, b, t) { return a + (b - a) * Math.max(0, Math.min(1, t)); }
+
+sc.addEventListener('scroll', () => {
+  const scrollTop = sc.scrollTop;
+  const scrollHeight = sc.scrollHeight - sc.clientHeight;
+  const progress = scrollTop / scrollHeight;
+  pf.style.width = (progress * 100) + '%';
+
+  const segHeight = 400;
+  const offset = 60;
+
+  cards.forEach((card, i) => {
+    const cardStart = offset + i * segHeight;
+    const t = (scrollTop - cardStart) / segHeight;
+
+    if (i === 0) {
+      const scale = lerp(1.18, 0.88, t);
+      const opacity = lerp(1, 0.3, Math.max(0, t - 0.5) * 2);
+      card.style.transform = `scale(${scale})`;
+      card.style.opacity = opacity;
+    } else if (i === cards.length - 1) {
+      const enterT = Math.max(0, Math.min(1, t + 1));
+      const scale = lerp(1.2, 1.0, enterT);
+      const opacity = lerp(0, 1, enterT);
+      card.style.transform = `scale(${scale})`;
+      card.style.opacity = opacity;
+    } else {
+      const enterT = Math.max(0, Math.min(1, t + 1));
+      const exitT = Math.max(0, Math.min(1, t));
+      const scale = lerp(lerp(1.2, 1.0, enterT), 0.88, exitT);
+      const opacity = lerp(lerp(0, 1, enterT), 0.3, Math.max(0, exitT - 0.5) * 2);
+      card.style.transform = `scale(${scale})`;
+      card.style.opacity = opacity;
+    }
+  });
+
+  const activeCard = Math.min(2, Math.floor((scrollTop - offset) / segHeight) + 1);
+  cc.textContent = Math.max(1, activeCard) + ' / 3';
+});
+</script>

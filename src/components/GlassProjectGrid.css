@@ -1,0 +1,219 @@
+/* ========== GLASS PROJECT GRID ========== */
+.gpg {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+/* ── Glassmorphism card ── */
+.gpg__card {
+  position: relative;
+  border-radius: 18px;
+  padding: 32px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.35);
+
+  /* Entrance animation (start hidden) */
+  opacity: 0;
+  transform: translateY(50px) scale(0.96);
+  transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gpg__card--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Color variants ── */
+.gpg__card--green {
+  background: linear-gradient(135deg, rgba(26, 42, 26, 0.7), rgba(13, 31, 26, 0.5));
+  border-color: rgba(99, 102, 241, 0.18);
+}
+.gpg__card--cyan {
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.7), rgba(13, 13, 42, 0.5));
+  border-color: rgba(34, 211, 238, 0.18);
+}
+.gpg__card--rose {
+  background: linear-gradient(135deg, rgba(42, 26, 26, 0.7), rgba(31, 13, 13, 0.5));
+  border-color: rgba(244, 63, 94, 0.18);
+}
+.gpg__card--violet {
+  background: linear-gradient(135deg, rgba(34, 26, 46, 0.7), rgba(22, 13, 42, 0.5));
+  border-color: rgba(139, 92, 246, 0.2);
+}
+.gpg__card--amber {
+  background: linear-gradient(135deg, rgba(46, 38, 20, 0.7), rgba(36, 28, 10, 0.5));
+  border-color: rgba(245, 158, 11, 0.2);
+}
+.gpg__card--emerald {
+  background: linear-gradient(135deg, rgba(16, 36, 30, 0.7), rgba(10, 28, 20, 0.5));
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+/* ── Ghost watermark ── */
+.gpg__ghost {
+  position: absolute;
+  top: -15px;
+  right: 18px;
+  font-size: 7rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.02);
+  pointer-events: none;
+  line-height: 1;
+  user-select: none;
+}
+
+/* ── Card header ── */
+.gpg__card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.gpg__card-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.gpg__card--cyan .gpg__card-tag { color: var(--accent-cyan); }
+.gpg__card--rose .gpg__card-tag { color: var(--accent-rose); }
+.gpg__card--violet .gpg__card-tag { color: var(--accent-secondary); }
+.gpg__card--amber .gpg__card-tag { color: var(--accent-amber); }
+.gpg__card--emerald .gpg__card-tag { color: var(--accent-emerald); }
+
+.gpg__card-icon {
+  font-size: 1.8rem;
+}
+
+/* ── Content ── */
+.gpg__card-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.gpg__card-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  color: var(--accent-tertiary);
+  margin-bottom: 10px;
+}
+
+.gpg__card-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Tags ── */
+.gpg__card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.gpg__tag {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--accent-primary);
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(99, 102, 241, 0.12);
+}
+
+.gpg__card--cyan .gpg__tag {
+  background: rgba(34, 211, 238, 0.08);
+  color: var(--accent-cyan);
+  border-color: rgba(34, 211, 238, 0.12);
+}
+.gpg__card--rose .gpg__tag {
+  background: rgba(244, 63, 94, 0.08);
+  color: var(--accent-rose);
+  border-color: rgba(244, 63, 94, 0.12);
+}
+.gpg__card--violet .gpg__tag {
+  background: rgba(139, 92, 246, 0.08);
+  color: var(--accent-secondary);
+  border-color: rgba(139, 92, 246, 0.12);
+}
+.gpg__card--amber .gpg__tag {
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--accent-amber);
+  border-color: rgba(245, 158, 11, 0.12);
+}
+.gpg__card--emerald .gpg__tag {
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--accent-emerald);
+  border-color: rgba(16, 185, 129, 0.12);
+}
+
+/* ── Link ── */
+.gpg__card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.gpg__card-link:hover {
+  color: var(--accent-primary);
+  gap: 10px;
+}
+
+/* ── Vanilla Tilt glare override ── */
+.gpg__card .js-tilt-glare {
+  border-radius: 18px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .gpg {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .gpg__card {
+    padding: 24px;
+  }
+
+  .gpg__card-title {
+    font-size: 1.15rem;
+  }
+
+  .gpg__ghost {
+    font-size: 5rem;
+  }
+}
