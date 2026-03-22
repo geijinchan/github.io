@@ -263,9 +263,9 @@ export default function Home() {
 
       {/* ── Featured Projects ── */}
       <section className="featured">
-        <div className="container">
+        {/* <div className="container"> */}
           <StackingCards projects={featured} />
-        </div>
+        {/* </div> */}
       </section>
 
       {/* ── Experience preview ── */}

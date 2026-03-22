@@ -85,6 +85,7 @@ export default function StackingCards({ projects }) {
           trigger: section,
           pin: true,
           scrub: 1.5,
+          anticipatePin: 1,
           start: 'top top',
           end: `+=${SCROLL_PER_PAIR * pairs.length}`,
         },
