@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import PageTransition from '../components/PageTransition.jsx'
-import ScrollScaleCards from '../components/ScrollScaleCards.jsx'
+import HorizontalProjectScroll from '../components/HorizontalProjectScroll.jsx'
 import { projects } from '../data/projects'
 import './Projects.css'
 
@@ -58,7 +58,7 @@ export default function Projects() {
           </div>
 
           {/* Scroll-scale cards */}
-          <ScrollScaleCards projects={filtered} label="Projects" />
+          <HorizontalProjectScroll projects={filtered} />
         </div>
       </section>
     </PageTransition>

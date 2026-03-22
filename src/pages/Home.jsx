@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
 import { gsap } from 'gsap'
 import PageTransition from '../components/PageTransition.jsx'
-import ScrollScaleCards from '../components/ScrollScaleCards.jsx'
+import StackingCards from '../components/StackingCards.jsx'
 import { projects, experience, skills, socialLinks } from '../data/projects'
 import './Home.css'
 
@@ -262,23 +262,9 @@ export default function Home() {
       <StatsSection />
 
       {/* ── Featured Projects ── */}
-      <section className="featured section">
+      <section className="featured">
         <div className="container">
-          <span className="section-label">Portfolio</span>
-          <h2 className="section-title">
-            Featured <span className="gradient-text">Projects</span>
-          </h2>
-          <p className="section-subtitle">
-            A selection of my most impactful work in AI, ML, and data science.
-          </p>
-
-          <ScrollScaleCards projects={featured} columns={2} />
-
-          <div className="featured__cta">
-            <Link to="/projects" className="btn btn-outline">
-              View All Projects →
-            </Link>
-          </div>
+          <StackingCards projects={featured} />
         </div>
       </section>
 

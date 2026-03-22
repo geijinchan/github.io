@@ -1,0 +1,120 @@
+/* ========== STACKING CARDS (Home Featured Projects) ========== */
+.sc {
+  /* Full viewport — GSAP pins this */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  overflow: hidden;
+  padding: 0;
+}
+
+/* ── Frozen header stays at the top while cards come in ── */
+.sc__head {
+  padding: 4rem 0 2rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 20;
+}
+
+.sc__subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 0.5rem;
+  max-width: 580px;
+}
+
+/* ── Cards area: fills remaining height, clips emerging cards ── */
+.sc__cards-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Each pair: absolutely overlapping, z-index drives stack order ── */
+.sc__pair {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  will-change: transform;
+  align-items: start;
+  padding-bottom: 1rem;
+}
+
+/* ── Individual glass card ── */
+.sc__card {
+  border-radius: 18px;
+  padding: 30px;
+  transform-style: preserve-3d;
+  will-change: transform;
+  height: 100%;
+  max-height: 420px;
+
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+/* Color variants */
+.sc__card--green   { background: linear-gradient(135deg, rgba(26,42,26,.82), rgba(13,31,26,.65)); border-color: rgba(99,102,241,.2); }
+.sc__card--cyan    { background: linear-gradient(135deg, rgba(26,26,46,.82), rgba(13,13,42,.65)); border-color: rgba(34,211,238,.2); }
+.sc__card--rose    { background: linear-gradient(135deg, rgba(42,26,26,.82), rgba(31,13,13,.65)); border-color: rgba(244,63,94,.2); }
+.sc__card--violet  { background: linear-gradient(135deg, rgba(34,26,46,.82), rgba(22,13,42,.65)); border-color: rgba(139,92,246,.25); }
+.sc__card--amber   { background: linear-gradient(135deg, rgba(46,38,20,.82), rgba(36,28,10,.65)); border-color: rgba(245,158,11,.25); }
+.sc__card--emerald { background: linear-gradient(135deg, rgba(16,36,30,.82), rgba(10,28,20,.65)); border-color: rgba(16,185,129,.25); }
+
+/* Card inner content */
+.sc__card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.sc__card-tag { font-family: var(--font-mono); font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-primary); }
+.sc__card--cyan .sc__card-tag    { color: var(--accent-cyan); }
+.sc__card--rose .sc__card-tag    { color: var(--accent-rose); }
+.sc__card--violet .sc__card-tag  { color: var(--accent-secondary); }
+.sc__card--amber .sc__card-tag   { color: var(--accent-amber); }
+.sc__card--emerald .sc__card-tag { color: var(--accent-emerald); }
+
+.sc__card-icon    { font-size: 1.8rem; }
+.sc__card-ghost   { position: absolute; top: -20px; right: 20px; font-size: 7rem; font-weight: 900; color: rgba(255,255,255,.025); pointer-events: none; line-height: 1; user-select: none; }
+.sc__card-title   { font-size: 1.35rem; font-weight: 800; line-height: 1.2; margin-bottom: 6px; color: var(--text-primary); letter-spacing: -.02em; }
+.sc__card-subtitle{ font-family: var(--font-mono); font-size: .74rem; color: var(--accent-tertiary); margin-bottom: 10px; }
+.sc__card-desc    { font-size: .81rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 14px;
+  display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.sc__card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.sc__tag { font-family: var(--font-mono); font-size: .63rem; padding: 3px 9px; border-radius: 20px;
+  background: rgba(99,102,241,.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,.15); }
+.sc__card--cyan .sc__tag    { background: rgba(34,211,238,.1);  color: var(--accent-cyan);      border-color: rgba(34,211,238,.15); }
+.sc__card--rose .sc__tag    { background: rgba(244,63,94,.1);   color: var(--accent-rose);      border-color: rgba(244,63,94,.15); }
+.sc__card--violet .sc__tag  { background: rgba(139,92,246,.1);  color: var(--accent-secondary); border-color: rgba(139,92,246,.15); }
+.sc__card--amber .sc__tag   { background: rgba(245,158,11,.1);  color: var(--accent-amber);     border-color: rgba(245,158,11,.15); }
+.sc__card--emerald .sc__tag { background: rgba(16,185,129,.1);  color: var(--accent-emerald);   border-color: rgba(16,185,129,.15); }
+
+.sc__card-link { display: inline-flex; align-items: center; gap: 6px; font-size: .79rem; font-weight: 500;
+  color: var(--text-secondary); transition: all var(--transition-fast);
+  padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.sc__card-link:hover { color: var(--accent-primary); gap: 10px; }
+
+/* tilt glare clip */
+.sc__card .js-tilt-glare { border-radius: 18px; }
+
+/* ── CTA below cards ── */
+.sc__cta {
+  flex-shrink: 0;
+  padding: 1.25rem 0 2rem;
+  position: relative;
+  z-index: 20;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sc__pair { grid-template-columns: 1fr; }
+  .sc__card { max-height: none; }
+}
