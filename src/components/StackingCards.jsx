@@ -97,9 +97,9 @@ export default function StackingCards({ projects }) {
         scrollTrigger: {
           trigger: section,
           scrub: 1.5,
-          start: 'top 75%',
+          start: 'top 90px',
           // end is relative to start: we need to scroll the 75% + the pin duration to finish the animation
-          end: () => `+=${SCROLL_PER_PAIR * pairs.length + window.innerHeight * 0.75}`,
+          end: `+=${SCROLL_PER_PAIR * pairs.length}`,
         },
       })
 
