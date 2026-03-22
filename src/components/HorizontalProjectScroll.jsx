@@ -71,18 +71,20 @@ export default function HorizontalProjectScroll({ projects }) {
       requestAnimationFrame(() => {
         const totalScrollX = strip.scrollWidth - strip.clientWidth
 
-        gsap.to(strip, {
-          x: -totalScrollX,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: section,
-            pin: true,
-            scrub: 1.2,
-            start: 'top top',
-            end: () => `+=${totalScrollX + 200}`,
-            invalidateOnRefresh: true,
-          },
-        })
+        if (totalScrollX > 0) {
+          gsap.to(strip, {
+            x: -totalScrollX,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              pin: true,
+              scrub: 1.2,
+              start: 'top top',
+              end: () => `+=${totalScrollX + 200}`,
+              invalidateOnRefresh: true,
+            },
+          })
+        }
       })
     }, section)
 
