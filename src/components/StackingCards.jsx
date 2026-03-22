@@ -78,27 +78,15 @@ export default function StackingCards({ projects }) {
       // All pairs start translated 110% below their natural position (off-screen bottom)
       gsap.set(pairEls, { yPercent: 110 })
 
-      // 1. PIN TRIGGER
-      // This exclusively handles freezing the header/section in place
-      // We use "top 90px" so it pins *below* the fixed navbar, preventing visual clipping/jumping
-      ScrollTrigger.create({
-        trigger: section,
-        pin: true,
-        anticipatePin: 1,
-        start: 'top 90px',
-        end: `+=${SCROLL_PER_PAIR * pairs.length}`,
-      })
-
-      // 2. ANIMATION TRIGGER
-      // This drives the card stacking. By starting at "top 75%", the cards begin sliding up
-      // *before* the section hits the top of the screen (while you are still scrolling it into view).
+      // We combine pinning and animating into a SINGLE ScrollTrigger
+      // to avoid GSAP conflict glitches when scrolling rapidly.
       const tl = gsap.timeline({
         defaults: { ease: 'power2.out' },
         scrollTrigger: {
           trigger: section,
+          pin: true,
           scrub: 1.5,
           start: 'top 90px',
-          // end is relative to start: we need to scroll the 75% + the pin duration to finish the animation
           end: `+=${SCROLL_PER_PAIR * pairs.length}`,
         },
       })
