@@ -52,14 +52,21 @@ function ProjectCard({ project, index, color }) {
   )
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   StackingCards
+   • Section pins to viewport via GSAP ScrollTrigger
+   • The header (label + title + subtitle) stays frozen at the top
+   • Each pair of cards slides up from the bottom and stacks on the previous
+────────────────────────────────────────────────────────────────────────── */
 export default function StackingCards({ projects }) {
   const sectionRef = useRef(null)
 
+  // Chunk projects into pairs
   const pairs = []
   for (let i = 0; i < projects.length; i += 2)
     pairs.push(projects.slice(i, i + 2))
 
-  const SCROLL_PER_PAIR = 720
+  const SCROLL_PER_PAIR = 720  // px of scroll each pair takes to enter
 
   useEffect(() => {
     const section = sectionRef.current
@@ -68,37 +75,38 @@ export default function StackingCards({ projects }) {
     const ctx = gsap.context(() => {
       const pairEls = gsap.utils.toArray('.sc__pair', section)
 
+      // All pairs start translated 110% below their natural position (off-screen bottom)
       gsap.set(pairEls, { yPercent: 110 })
 
-      // PIN TRIGGER
-      // invalidateOnRefresh forces GSAP to re-measure on every page load/resize,
-      // preventing a position jump when the section transitions to position:fixed
+      // 1. PIN TRIGGER
+      // This exclusively handles freezing the header/section in place
+      // We use "top 90px" so it pins *below* the fixed navbar, preventing visual clipping/jumping
       ScrollTrigger.create({
         trigger: section,
         pin: true,
         anticipatePin: 1,
-        invalidateOnRefresh: true,
         start: 'top 90px',
         end: `+=${SCROLL_PER_PAIR * pairs.length}`,
       })
 
-      // ANIMATION TRIGGER
-      // start matches pin exactly — cards only animate after the section is locked in place.
-      // If animation started earlier (e.g. 'top 75%'), GSAP inserting the pin spacer
-      // would cause a visible reset/jump mid-animation.
+      // 2. ANIMATION TRIGGER
+      // This drives the card stacking. By starting at "top 75%", the cards begin sliding up
+      // *before* the section hits the top of the screen (while you are still scrolling it into view).
       const tl = gsap.timeline({
         defaults: { ease: 'power2.out' },
         scrollTrigger: {
           trigger: section,
           scrub: 1.5,
-          invalidateOnRefresh: true,
           start: 'top 90px',
+          // end is relative to start: we need to scroll the 75% + the pin duration to finish the animation
           end: `+=${SCROLL_PER_PAIR * pairs.length}`,
         },
       })
 
       pairEls.forEach((pair, i) => {
+        // Bring this pair in
         tl.to(pair, { yPercent: 0, duration: 1 }, i)
+        // Slightly scale back previous pairs to create physical stack depth
         for (let j = 0; j < i; j++) {
           const depth = i - j
           tl.to(pairEls[j], { scale: 1 - depth * 0.04, duration: 1 }, i)
@@ -112,6 +120,7 @@ export default function StackingCards({ projects }) {
 
   return (
     <div ref={sectionRef} className="sc">
+      {/* ── Frozen header ── */}
       <div className="sc__head">
         <span className="section-label">Portfolio</span>
         <h2 className="section-title">
@@ -122,6 +131,7 @@ export default function StackingCards({ projects }) {
         </p>
       </div>
 
+      {/* ── Cards area — pairs emerge from here ── */}
       <div className="sc__cards-area">
         {pairs.map((pair, pi) => (
           <div
@@ -140,11 +150,13 @@ export default function StackingCards({ projects }) {
                 />
               )
             })}
+            {/* Spacer if odd number */}
             {pair.length === 1 && <div />}
           </div>
         ))}
       </div>
 
+      {/* ── CTA ── */}
       <div className="sc__cta">
         <Link to="/projects" className="btn btn-outline">View All Projects →</Link>
       </div>
