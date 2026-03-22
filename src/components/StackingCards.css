@@ -1,12 +1,14 @@
 /* ========== STACKING CARDS (Home Featured Projects) ========== */
 .sc {
-  /* Full viewport — GSAP pins this */
-  min-height: 100vh;
+  /* height (not min-height) — GSAP needs a stable fixed dimension.
+     min-height can grow with content, causing a jump when the pin fires. */
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background: transparent;
   overflow: hidden;
-  padding: 0;
+  /* horizontal padding — keeps cards off screen edges */
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
 }
 
 /* ── Frozen header stays at the top while cards come in ── */
