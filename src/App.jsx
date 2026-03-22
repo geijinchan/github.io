@@ -7,12 +7,14 @@ import Projects from './pages/Projects.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import './App.css'
+import CustomCursor from './components/CustomCursor'
 
 function App() {
   const location = useLocation()
 
   return (
     <div className="page-wrapper">
+      <CustomCursor />
       <div className="bg-grid" />
       <div className="bg-glow bg-glow-1" />
       <div className="bg-glow bg-glow-2" />
