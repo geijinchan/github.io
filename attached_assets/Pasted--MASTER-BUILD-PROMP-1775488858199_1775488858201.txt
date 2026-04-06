@@ -1,0 +1,894 @@
+================================================================================
+MASTER BUILD PROMPT — IMMERSIVE 3D PORTFOLIO WEBSITE
+Version: 1.0 | Author: [YOUR NAME] | Target: Production-ready, GitHub Pages
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 0 — IDENTITY & PERSONAL DATA (FILL BEFORE USING)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+NAME:            [YOUR FULL NAME]
+TITLE:           [e.g. Full Stack Developer & Creative Technologist]
+GITHUB_USERNAME: [your_github_username]
+GITHUB_REPO:     [your_repo_name]
+EMAIL:           [your@email.com]
+LOCATION:        [City, Country]
+TAGLINE:         [e.g. "Building worlds in the browser"]
+SUBTAGLINE:      [e.g. "3+ years crafting digital experiences where code meets art"]
+
+TECH_STACK:      [e.g. React, Three.js, Node.js, Python, TypeScript, PostgreSQL]
+SKILLS_LIST:     [Comma separated, e.g. WebGL, GSAP, Docker, AWS, Figma]
+
+EXPERIENCE: (fill each entry)
+  - Role: [Job Title] | Company: [Company Name] | Years: [e.g. 2023–Present]
+    Description: [1–2 sentences about what you did]
+  - Role: [...] | Company: [...] | Years: [...]
+    Description: [...]
+  (add as many as needed)
+
+EDUCATION:
+  - Degree: [...] | Institution: [...] | Year: [...]
+
+SOCIAL_LINKS:
+  github:   https://github.com/[your_username]
+  linkedin: [your_linkedin_url]
+  twitter:  [your_twitter_url]    (optional)
+  email:    mailto:[your@email.com]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 1 — PROJECT OVERVIEW & VISION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Build a world-class, award-worthy 3D immersive portfolio website for a creative
+developer. The aesthetic benchmark is igloo.inc — an Awwwards SOTD winner:
+  - Deep dark backgrounds (#04060d)
+  - Text scramble/glitch effects on all heading reveals
+  - Synthesized typing sounds on every text reveal (Web Audio API, toggleable)
+  - Film grain overlay (canvas-based noise texture)
+  - Slow horizontal scan lines drifting through the scene
+  - Chromatic aberration flashes at random intervals
+  - Parallax dot grid responding to mouse movement
+  - Ultra-smooth 60fps scroll-driven animations
+  - Custom magnetic cursor with ring + dot + context label
+  - Space Grotesk + Space Mono typography (Google Fonts)
+  - Every page feels like entering a different dimension
+
+This is a SINGLE PAGE APPLICATION with section-based scroll navigation.
+No frameworks required — build in Vanilla HTML + CSS + JavaScript with:
+  - Three.js (via CDN) for all 3D rendering
+  - GSAP + ScrollTrigger (via CDN) for all scroll animations
+  - Web Audio API (native) for sound design
+  - GitHub REST API (fetch, no auth) for live project data
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 2 — TECH STACK & DEPENDENCIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DEPENDENCIES (all via CDN, no npm required):
+  Three.js:        https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js
+  GSAP:            https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js
+  ScrollTrigger:   https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js
+  Google Fonts:    Space Grotesk (300,400,500,600) + Space Mono (400,700)
+
+FILE STRUCTURE:
+  /
+  ├── index.html              ← single page, all sections
+  ├── style.css               ← global styles, CSS variables, animations
+  ├── main.js                 ← entry point, scene init, scroll controller
+  ├── modules/
+  │   ├── cursor.js           ← custom magnetic cursor logic
+  │   ├── sound.js            ← Web Audio API sound engine
+  │   ├── scramble.js         ← text scramble + glitch engine
+  │   ├── particles.js        ← Three.js particle field
+  │   ├── github.js           ← GitHub API fetcher + tree builder
+  │   └── loader.js           ← loading screen + progress
+  ├── sections/
+  │   ├── hero.js             ← hero section 3D scene
+  │   ├── about.js            ← about section animations
+  │   ├── projects.js         ← projects folder/tree
+  │   ├── experience.js       ← neural map experience
+  │   ├── skills.js           ← 3D skills globe
+  │   └── contact.js          ← contact section
+  └── .github/
+      └── workflows/
+          └── deploy.yml      ← GitHub Actions deployment
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 3 — DESIGN SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CSS VARIABLES (define in :root):
+  --bg-primary:     #04060d      ← deepest background
+  --bg-secondary:   #080b16      ← surface / card bg
+  --bg-tertiary:    #0d1124      ← elevated surface
+  --accent-purple:  #7c6fcd      ← primary accent
+  --accent-teal:    #3ecfb2      ← secondary accent
+  --accent-glow:    rgba(124,111,205,0.15)
+  --text-primary:   #e8e6f0      ← main text
+  --text-secondary: rgba(232,230,240,0.5)
+  --text-muted:     rgba(232,230,240,0.2)
+  --border-dim:     rgba(124,111,205,0.12)
+  --border-accent:  rgba(124,111,205,0.35)
+  --font-sans:      'Space Grotesk', sans-serif
+  --font-mono:      'Space Mono', monospace
+
+TYPOGRAPHY SCALE:
+  Hero heading:    clamp(3rem, 7vw, 6rem) | weight 300 | letter-spacing -0.02em
+  Section heading: clamp(2rem, 4vw, 3.5rem) | weight 300
+  Sub-heading:     1.2rem | weight 400
+  Body:            1rem | line-height 1.8 | color var(--text-secondary)
+  Mono/overline:   0.7rem | letter-spacing 0.4em | uppercase | color var(--accent-teal)
+  Terminal:        0.75rem | Space Mono | color var(--accent-teal)
+
+SPACING SYSTEM: use multiples of 8px
+  --space-xs: 8px | --space-sm: 16px | --space-md: 24px
+  --space-lg: 48px | --space-xl: 96px | --space-2xl: 160px
+
+BORDER TREATMENT:
+  All borders: 0.5px solid var(--border-dim)
+  Active/hover: 0.5px solid var(--border-accent)
+  Never use solid thick borders — always hairline 0.5px
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 4 — GLOBAL SYSTEMS (implement in all pages/sections)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+── 4.1 CUSTOM CURSOR (cursor.js) ──────────────────────────────────────────────
+
+Build a two-part cursor:
+  OUTER RING: 40×40px circle, border 1.5px solid var(--accent-purple),
+              border-radius 50%, mix-blend-mode: screen,
+              follows mouse with 0.12 lerp (smooth lag)
+  INNER DOT:  6×6px filled circle, color var(--accent-teal),
+              follows mouse directly (no lag)
+  CONTEXT LABEL: 10px mono text, appears below ring, shows context
+                 e.g. "EXPLORE", "OPEN", "VIEW", "DRAG", "SEND"
+                 fades in on hoverable elements, fades out otherwise
+
+MAGNETIC EFFECT: When cursor is within 80px of a button or link,
+  the element gently pulls toward the cursor (transform translate,
+  max ±15px) and the cursor ring expands to 60px.
+
+CURSOR STATES:
+  - default:   purple ring, teal dot
+  - hovering link/btn: ring expands (60px), label appears, ring color → teal
+  - clicking:  ring shrinks (20px) for 150ms then returns
+  - on canvas: ring disappears, only dot visible
+  - loading:   ring rotates with dashed border
+
+── 4.2 SOUND ENGINE (sound.js) ────────────────────────────────────────────────
+
+Implement entirely via Web Audio API (no audio files needed — all synthesized):
+
+SFX_TYPING:   Oscillator type=square, freq 800-1200 random, duration 60ms,
+              gain 0.03 → 0.001, fire on each character of text scramble
+
+SFX_CLICK:    Oscillator type=sawtooth, freq 300→80 sweep, duration 150ms,
+              gain 0.08 → 0.001, fire on all button clicks
+
+SFX_HOVER:    Oscillator type=sine, freq 1200, duration 80ms,
+              gain 0.02 → 0.001, fire on button/link mouseenter
+
+SFX_REVEAL:   Two oscillators: base tone 120Hz + harmonic 240Hz,
+              duration 800ms, gain envelope: attack 100ms, decay 700ms,
+              fire when a section enters viewport
+
+SFX_GLITCH:   White noise burst, duration 80ms, gain 0.05,
+              fire with every glitch visual
+
+SFX_SUCCESS:  Oscillator sine, freq 440→880 sweep, duration 300ms,
+              fire on form submit / copy actions
+
+SOUND TOGGLE: Floating button top-right with animated equalizer bars
+              (5 bars, each animating independently).
+              State persisted to localStorage.
+              Label switches "SFX ON" ↔ "SFX OFF"
+              All sounds respect this toggle.
+
+── 4.3 TEXT SCRAMBLE ENGINE (scramble.js) ─────────────────────────────────────
+
+Implement ScrambleText class:
+  CHARS:    ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*
+
+  METHOD scramble(element, finalText, duration, options):
+    - Divides finalText into characters
+    - For each frame, characters before "revealed index" show their real value
+    - Characters after "revealed index" show random chars from CHARS
+    - revealed index advances based on easing curve over `duration`ms
+    - Each newly-revealed character fires SFX_TYPING
+    - Option: onComplete callback
+    - Option: stagger (delay between each character reveal start)
+    - Option: glitchProbability 0-1 (chance to show wrong char briefly after reveal)
+
+  GLITCH VARIANT (for headings):
+    - After text is fully revealed, randomly glitch 1-2 characters every 4-8 seconds
+    - Glitch lasts 120ms: char → random → correct
+    - Fire SFX_GLITCH on each glitch
+
+  USAGE: trigger scramble on:
+    - Page load for hero heading
+    - ScrollTrigger onEnter for all section headings
+    - Navigation link hover (scramble the link text briefly)
+    - Terminal messages (loop indefinitely)
+
+── 4.4 FILM GRAIN + SCAN LINE OVERLAY ─────────────────────────────────────────
+
+Create a full-viewport canvas overlay (z-index 1000, pointer-events none):
+
+GRAIN:
+  - 256×256 pixel canvas, filled with random grayscale noise
+  - opacity: 0.03-0.05
+  - Regenerate noise every 3 frames for animated grain feel
+  - Use ImageData for performance
+
+SCAN LINES:
+  - Horizontal lines every 3px, opacity 0.015, color white
+  - Static (not animated)
+  - Rendered as CSS repeating-linear-gradient for performance
+
+HORIZONTAL GLOW SWEEP:
+  - Slow moving gradient band, height ~120px
+  - Moves from top to bottom over 12 seconds, loops
+  - Color: rgba(62,207,178,0.015)
+
+VIGNETTE:
+  - CSS radial-gradient overlay, dark edges, transparent center
+  - background: radial-gradient(ellipse at center, transparent 40%, rgba(4,6,13,0.6) 100%)
+
+── 4.5 CHROMATIC ABERRATION GLITCH ───────────────────────────────────────────
+
+Trigger randomly every 8-15 seconds and on:
+  - Section transitions
+  - Button clicks
+  - Page load complete
+
+EFFECT:
+  - Apply CSS filter: url(#chromatic) to the main container briefly
+  - Create an SVG filter with feColorMatrix and feOffset for R/G/B channel split
+  - Add 3-5 random horizontal bars with slight X offset and color tint
+  - Duration: 80-120ms
+  - Also briefly translate the entire viewport content ±2-4px horizontally
+
+── 4.6 BACKGROUND PARTICLE FIELD (particles.js — Three.js) ────────────────────
+
+A persistent Three.js scene that runs behind all sections:
+
+SETUP:
+  - WebGLRenderer, alpha: true, antialias: true
+  - Camera: PerspectiveCamera fov 75, positioned at z=5
+  - Renderer covers full viewport, z-index 0, position fixed
+
+PARTICLES:
+  - Count: 800
+  - BufferGeometry with random positions in sphere radius 8
+  - Each particle has random size (0.5-2px)
+  - Color: mix of --accent-purple and --accent-teal, some white
+  - Speed varies per particle
+  - Particles drift upward slowly, respawning at bottom when off-screen
+  - Color shifts based on velocity magnitude (faster = brighter)
+
+MOUSE PARALLAX:
+  - Camera position gently follows mouse: lerp to (mouseX*0.8, mouseY*0.4, 5)
+  - Creates illusion of depth as user moves mouse
+
+SCROLL BEHAVIOR:
+  - Particles slowly rotate around Y axis as user scrolls
+  - Each section has a different rotation angle — scroll drives the rotation
+
+CONNECTION LINES:
+  - Draw thin lines between particles within 0.8 units of each other
+  - Line opacity: based on distance (closer = more opaque)
+  - Max connections per particle: 3
+  - Color: var(--accent-purple) at 15% opacity
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5 — PAGE SECTIONS (detailed per section)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+── SECTION A: LOADING SCREEN ──────────────────────────────────────────────────
+
+Full-viewport loading screen shown before page is ready:
+
+VISUAL:
+  - Black background
+  - Centered: monospaced counter "0%" → "100%" in large type (5rem, weight 300)
+  - Counter increments with scramble effect on each number
+  - Below counter: scrambling status text
+    e.g. "INITIALIZING_WEBGL" → "LOADING_ASSETS" → "COMPILING_SHADERS" → "READY"
+  - Thin horizontal progress bar at bottom, color var(--accent-teal)
+  - Film grain active during loading
+
+ANIMATION OUT:
+  - At 100%: brief 200ms pause
+  - Glitch flash (chromatic aberration)
+  - SFX_REVEAL plays
+  - Loader div: clip-path wipe upward over 800ms (cubic-bezier(0.76,0,0.24,1))
+  - Main content fades in underneath
+
+── SECTION B: NAVIGATION ──────────────────────────────────────────────────────
+
+Sticky top navbar, height 64px:
+  LEFT:   Logo — "[INITIALS]" in mono font, accent-teal color,
+          with a subtle breathing glow animation (box-shadow pulse)
+  CENTER: Nav links: Work | About | Experience | Skills | Contact
+          Each link: 10px mono, letter-spacing 0.3em, uppercase
+          Hover: scramble the text briefly + SFX_HOVER
+          Active section: bottom border 0.5px var(--accent-teal)
+  RIGHT:  Sound toggle button + [optional: "HIRE ME" pill button]
+
+BEHAVIOR:
+  - On scroll down >100px: navbar background becomes
+    rgba(4,6,13,0.85) with backdrop-filter blur(20px)
+  - On scroll up: returns to transparent
+  - Mobile: hamburger → fullscreen menu with each link staggered in
+  - Smooth scroll to section on click with GSAP
+
+PROGRESS INDICATOR:
+  - 1px line at very top of viewport
+  - Fills left→right as user scrolls through page
+  - Color: linear-gradient(to right, var(--accent-purple), var(--accent-teal))
+
+── SECTION C: HERO ────────────────────────────────────────────────────────────
+
+Full-viewport section, min-height 100vh:
+
+LEFT SIDE (60% width):
+  OVERLINE:   scrambles in on load with 600ms delay
+              "[ROLE] — [YEAR]" in mono, 10px, letter-spacing 0.4em, teal
+  HEADING:    "[YOUR NAME]" in massive type (clamp 3rem–6rem)
+              Scramble effect on load, 800ms duration
+              Has a cycling word: "builds [worlds/dreams/systems/futures]"
+              Word cycles every 4 seconds with scramble transition
+  SUBHEADING: Paragraph about you, 400 weight, secondary color
+              Fades+slides up 200ms after heading completes
+  CTA ROW:    Two buttons:
+              Primary: "View My Work" → magnetic, hover: bg fills with accent
+              Ghost: "Download CV" → hover: border brightens
+              Both trigger SFX_CLICK on click
+
+BOTTOM LEFT:
+  Status indicator: pulsing dot + "AVAILABLE FOR HIRE" in 10px mono
+
+RIGHT SIDE (40% width):
+  Floating 3D element (Three.js sub-scene or CSS 3D):
+  - A slowly rotating geometric shape (icosahedron or torus-knot)
+  - Wireframe style: EdgesGeometry with LineSegments
+  - Color: accent-purple, opacity 0.6
+  - Rotates continuously on Y and X axes
+  - On mouse enter: rotation speeds up
+  - On click: morph to a different geometry (icosahedron → octahedron → torus)
+  - Surrounded by 3-4 orbiting tiny spheres on different orbital paths
+
+BOTTOM STRIP (terminal bar):
+  - Same as igloo.inc — full-width strip, border-top hairline
+  - Shows: version number | system status | live clock | cycling terminal messages
+  - Messages cycle with scramble: "webgl_active" → "cursor_tracking" → etc.
+
+SCROLL INDICATOR:
+  - Bottom center: "SCROLL" in 9px mono + animated arrow
+  - Disappears after user scrolls 50px
+
+── SECTION D: ABOUT ───────────────────────────────────────────────────────────
+
+Min-height: 100vh, scroll-pinned for 200vh of scroll travel:
+
+PIN BEHAVIOR (GSAP ScrollTrigger pin):
+  The section is pinned while scroll travels 200vh.
+  As user scrolls within this 200vh window, content animates.
+
+PHASE 1 (first 100vh of scroll):
+  LEFT: Large number counter "3+" or "5+" years — counts up from 0
+        Below: "YEARS OF EXPERIENCE" in overline style
+  RIGHT: Portrait photo or abstract 3D avatar
+         If using photo: clip-path circle reveal animation
+         If no photo: animated 3D low-poly face / abstract geometry
+
+PHASE 2 (second 100vh of scroll):
+  Bio text reveals word by word (not scramble — flowing reveal)
+  Each sentence slides up from 30px below with opacity 0→1
+  Stagger: 80ms between words/lines
+
+BACKGROUND DETAIL:
+  - Abstract grid lines, slightly 3D perspective, extremely subtle
+  - Overline changes per phase: "WHO I AM" → "WHAT I DO"
+
+── SECTION E: PROJECTS ────────────────────────────────────────────────────────
+
+This is the most unique and important section.
+
+CONCEPT: File system explorer — your GitHub presented as a 3D file tree.
+
+ENTRY ANIMATION:
+  - Section enters with text: "~/projects" in terminal style
+  - A large glowing folder icon materializes at center screen
+  - Folder has your GitHub avatar overlaid on it
+  - Label: "github.com/[USERNAME]" beneath in mono
+
+CLICK TO OPEN:
+  - User clicks the folder (cursor shows "OPEN")
+  - SFX_CLICK plays
+  - Folder "opens" with a 3D flip animation (rotateX 0→-90deg)
+  - From the folder, project nodes branch outward like a root tree
+  - Each node connected to center by animated dashed lines (drawn via SVG or Canvas)
+  - Lines draw themselves from center outward, one by one, staggered 100ms each
+  - Nodes appear at end of each line with scale 0→1 bounce
+
+PROJECT NODE DESIGN:
+  Each node is a "file card":
+  - Background: var(--bg-secondary), border: hairline var(--border-accent)
+  - TOP: Repo name in mono, 13px, color var(--accent-teal)
+  - MIDDLE: Description (1 line), 11px, secondary color
+  - BOTTOM ROW: Language color dot + language name | ★ stars | fork icon + forks
+  - TOP-RIGHT: Small tag showing primary language
+
+GITHUB API INTEGRATION:
+  Fetch live from: https://api.github.com/users/[USERNAME]/repos?sort=stars&per_page=12
+  Show top 8 repos by stars.
+  Show: name, description, language, stargazers_count, forks_count, html_url
+  If API fails (rate limit), show placeholder data gracefully.
+  Loading state: skeleton shimmer on node cards.
+
+HOVER BEHAVIOR:
+  - Node card lifts (translateY -6px) + border brightens
+  - Connected line brightens and a pulse travels along it toward the node
+  - Tooltip shows: "Open on GitHub →"
+  - SFX_HOVER plays
+
+CLICK ON NODE:
+  - Card flips 180deg to show back side with:
+    Top 3 commit messages (use commits API endpoint)
+    "View on GitHub" button
+  - Or: Opens GitHub repo in new tab
+
+LAYOUT:
+  - On desktop: radial/spoke layout, folder in center, nodes around it
+  - On mobile: vertical list with folder at top, nodes stacked below
+
+── SECTION F: EXPERIENCE ──────────────────────────────────────────────────────
+
+CONCEPT: Your career as a neural/force graph — interactive, explorable.
+
+BACKGROUND:
+  - Very subtle neural network pattern (animated SVG lines)
+  - Random nodes blinking across the bg at low opacity
+
+CENTER NODE:
+  - Large circle (60px diameter)
+  - Pulsing glow animation
+  - Shows your initials
+  - Label: "YOU" below in 10px mono
+
+EXPERIENCE NODES:
+  Each job/role is a node orbiting the center:
+  - Connected to center by animated line (draws in on scroll enter)
+  - Line style: dashed, color matches node accent
+  - Node size proportional to seniority/duration
+  - Node contains: Company name (primary) + Role (secondary)
+  - Color scheme: each company gets a unique accent from the palette
+
+HOVER ON NODE:
+  - Node expands slightly
+  - Tooltip appears: full role title, dates, 2-line description
+  - Connected lines highlight
+  - Satellite skill nodes orbit around it (skills used at that job)
+  - SFX_HOVER plays
+
+TIMELINE ALTERNATIVE VIEW:
+  Toggle button "GRAPH / TIMELINE" at top-right of section
+  On click: nodes morph (GSAP) from radial layout into a vertical timeline
+  Timeline view: left line, nodes as dots on the line, cards to the right
+  Each card: company, role, dates, bullet points of achievements
+
+SCROLL BEHAVIOR:
+  - Nodes draw in one by one as section scrolls into view
+  - Each node has 200ms stagger
+
+── SECTION G: SKILLS ──────────────────────────────────────────────────────────
+
+CONCEPT: A 3D rotating globe with skills plotted as points on the surface.
+
+THREE.JS GLOBE:
+  - Sphere geometry, radius 2, wireframe style
+  - Use SphereGeometry with low segment count (24×24) for geometric look
+  - Material: MeshBasicMaterial, color accent-purple, wireframe true, opacity 0.3
+  - Slow auto-rotation around Y axis
+  - Mouse drag to rotate manually
+
+SKILL POINTS:
+  - Each skill is a point on the sphere surface
+  - Position: pseudo-random but distributed evenly using Fibonacci sphere algorithm
+  - Each point: glowing dot (SphereGeometry radius 0.05) + floating label
+  - Labels: use Three.js CSS2DRenderer for HTML labels that follow 3D positions
+  - Label shows: skill name in mono, 11px
+  - Color coding by category:
+    Frontend: accent-purple
+    Backend: accent-teal
+    DevOps: amber
+    Design: pink
+    Languages: white
+
+HOVER ON SKILL POINT:
+  - Point enlarges (scale 3×)
+  - Tooltip appears: skill name + years of experience + proficiency bar
+  - Other points dim slightly
+
+CATEGORY FILTER:
+  - Below globe: pill buttons for each category
+  - Click: non-matching points fade, matching points glow brighter
+  - SFX_CLICK on filter change
+
+SCROLL ENTRY:
+  - Globe assembles from scattered points: start with all points at random
+    positions, then GSAP animates them to their final sphere positions
+  - Duration: 1200ms, stagger 2ms per point
+
+── SECTION H: CONTACT ─────────────────────────────────────────────────────────
+
+CONCEPT: A terminal/command-line styled contact form.
+
+VISUAL:
+  - Dark terminal window (var(--bg-secondary), border hairline)
+  - Terminal title bar: three dots (red/amber/green) + "contact_me.sh"
+  - Blinking cursor
+  - Monospaced font throughout
+
+INTERACTION FLOW:
+  When user clicks anywhere in the terminal, it "activates":
+  1. Terminal prints: "$ initiating_contact_sequence..."
+  2. Prints: "> enter_name: " — user types in inline input
+  3. On Enter: name echoes, next line: "> enter_email: "
+  4. On Enter: email echoes, next line: "> enter_message: "
+  5. On Enter: message echoes
+  6. System "compiles": scramble text shows "SENDING..."
+  7. SFX_SUCCESS plays
+  8. Prints: "✓ MESSAGE_DELIVERED — [timestamp]"
+
+Each keystroke plays SFX_TYPING.
+Pressing Enter plays SFX_CLICK.
+
+FORM SUBMISSION:
+  Use Formspree (https://formspree.io) for backend — free tier.
+  Method: fetch POST to Formspree endpoint.
+  No page reload — fully in-terminal.
+
+SOCIAL LINKS:
+  Below terminal: icon links for GitHub, LinkedIn, Twitter, Email
+  Each has: platform name in 9px mono, icon (SVG), subtle hover glow
+  Hover: scramble the platform name briefly + SFX_HOVER
+
+BACKGROUND:
+  Particles extra dense in this section
+  Subtle radial glow behind terminal window
+
+── SECTION I: FOOTER ──────────────────────────────────────────────────────────
+
+Minimal:
+  - "[NAME] © [YEAR]" left
+  - "BUILT WITH THREE.JS + GSAP" center in tiny mono
+  - "BACK TO TOP ↑" right — click scrolls to top with GSAP
+  - Top border: 0.5px var(--border-dim)
+  - Easter egg: clicking the copyright 3 times triggers a special glitch
+    animation that briefly shows a "secret" message
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 6 — SCROLL ANIMATION SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+USE GSAP ScrollTrigger for ALL scroll animations.
+
+GLOBAL RULE — "invisible until earned":
+  Every element below the hero starts with:
+    opacity: 0
+    transform: translateY(40px)
+  And animates to:
+    opacity: 1
+    transform: translateY(0)
+  When it enters the viewport (start: "top 85%")
+
+ELEMENT-SPECIFIC ANIMATIONS:
+
+  HEADINGS:
+    - ScrollTrigger onEnter: trigger ScrambleText
+    - After scramble completes: GSAP to full opacity
+    - Glitch flash on entry
+
+  PARAGRAPH TEXT:
+    - Reveal word by word (split into spans)
+    - Stagger 30ms per word
+    - opacity 0→1, translateY 20px→0
+
+  CARDS / NODES:
+    - Scale 0.8→1, opacity 0→1
+    - Stagger 100ms per card
+    - Custom cubic-bezier(0.34,1.56,0.64,1) for slight bounce
+
+  LINES / BORDERS:
+    - Clip-path: inset(0 100% 0 0) → inset(0 0% 0 0)
+    - Duration 600ms, ease: power2.out
+
+  NUMBERS / COUNTERS:
+    - Count up from 0 to target value
+    - Duration: 1200ms, ease: power1.out
+    - Each digit scrambles briefly before settling
+
+  THREE.JS OBJECTS:
+    - Use ScrollTrigger onUpdate to get scroll progress 0→1
+    - Drive rotation, position, scale via this progress value
+    - Smooth with lerp in the animation loop
+
+SECTION TRANSITIONS:
+  Between sections, trigger a micro chromatic aberration glitch
+  Duration: 100ms, then SFX_REVEAL plays for the new section
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 7 — PERFORMANCE & OPTIMIZATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TARGET: 60fps on mid-range devices, smooth on mobile
+
+THREE.JS:
+  - Use BufferGeometry everywhere (never Geometry)
+  - Reuse materials and geometries where possible
+  - Dispose of objects when section leaves viewport
+  - Limit draw calls: merge static particles into single BufferGeometry
+  - Use requestAnimationFrame properly — single global loop
+  - PixelRatio: Math.min(window.devicePixelRatio, 2) — never >2
+
+GSAP:
+  - Use will-change: transform on animated elements
+  - Prefer transform + opacity (GPU-composited) over top/left/width
+  - Kill ScrollTrigger instances on section destroy
+  - Use GSAP ticker instead of multiple rAF loops
+
+IMAGES:
+  - Lazy load all images
+  - Use WebP format
+  - Add loading="lazy" to all <img> tags
+
+FONT:
+  - font-display: swap for Google Fonts
+  - Preconnect to fonts.googleapis.com and fonts.gstatic.com
+
+CODE SPLITTING:
+  - Load section modules dynamically (import()) when section is 200px from viewport
+  - GitHub API module loads only when Projects section is near
+
+REDUCED MOTION:
+  @media (prefers-reduced-motion: reduce):
+    - Disable all Three.js animations (pause renderer)
+    - Disable scramble effect (show text immediately)
+    - Disable parallax
+    - Keep GSAP fades but remove translate animations
+    - Mute all sounds
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 8 — MOBILE RESPONSIVENESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+BREAKPOINTS:
+  Mobile:  < 768px
+  Tablet:  768px – 1024px
+  Desktop: > 1024px
+
+MOBILE ADAPTATIONS:
+  - Hero: stack vertically, 3D shape below text, smaller font
+  - Particle count: reduce to 300 on mobile
+  - Connection lines: disabled on mobile
+  - Projects: vertical list instead of radial tree
+  - Experience: timeline view by default (no force graph on mobile)
+  - Skills globe: 2D tag cloud fallback on mobile
+  - Nav: hamburger menu, full-screen overlay
+
+TOUCH:
+  - Replace magnetic cursor with tap ripple effect
+  - Disable cursor entirely on touch devices
+  - Pinch-to-rotate on 3D elements
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 9 — GITHUB ACTIONS DEPLOYMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create .github/workflows/deploy.yml with EXACT content:
+
+name: Deploy Portfolio to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+ALSO INCLUDE:
+  - A .nojekyll file in root (empty file, tells GitHub Pages to skip Jekyll)
+  - A 404.html that redirects to index.html for SPA routing
+  - README.md with setup instructions and live URL badge
+
+GITHUB REPO SETTINGS REQUIRED (document in README):
+  Settings → Pages → Source: GitHub Actions
+  Settings → Actions → General → Workflow permissions: Read and write
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 10 — EASTER EGGS & UNIQUE FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement ALL of the following for award-worthy uniqueness:
+
+1. KONAMI CODE: ↑↑↓↓←→←→BA
+   Triggers: full-screen rainbow particle explosion + "CHEAT CODE ACTIVATED"
+   in giant scrambling text + SFX_SUCCESS plays 3 times
+
+2. CURSOR TRAIL: After 300ms of fast mouse movement, cursor leaves a
+   brief trail of 8 fading dots (opacity 1→0, scale 1→0 over 400ms each)
+
+3. IDLE STATE: After 30 seconds of no interaction:
+   - Screensaver mode: particles speed up 3×
+   - Text glitches randomly
+   - A subtle message fades in: "still there?"
+   - Any interaction restores normal state
+
+4. SECRET TERMINAL: Press ` (backtick) anywhere to open a terminal overlay
+   Accepts commands:
+   - help → lists commands
+   - clear → clears terminal
+   - about → prints bio as ASCII
+   - skills → lists all skills
+   - whoami → prints name and role
+   - matrix → triggers matrix rain effect for 5 seconds
+   - exit → closes terminal
+
+5. COPY TO CLIPBOARD: Clicking email address copies it silently,
+   cursor briefly shows "COPIED!" label, SFX_SUCCESS plays
+
+6. SCROLL SPEED VISUALIZATION: The connection lines between
+   particles in the bg temporarily brighten and multiply when
+   user scrolls fast, creating a warp-speed effect
+
+7. TIME-OF-DAY TINT: Very subtly shift the accent color based on
+   local time (morning: slightly warmer, night: cooler blue-purple)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 11 — SEO & META
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In <head> of index.html include:
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="[NAME] — [ROLE]. Portfolio showcasing projects in [TECH_STACK].">
+  <meta name="keywords" content="[NAME], developer, portfolio, Three.js, [TECH_STACK]">
+  <meta name="author" content="[NAME]">
+
+  Open Graph:
+  <meta property="og:title" content="[NAME] — Portfolio">
+  <meta property="og:description" content="[TAGLINE]">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://[USERNAME].github.io/[REPO]/">
+  <meta property="og:image" content="./og-image.png"> (create a 1200×630 dark OG image)
+
+  Twitter Card:
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="[NAME] — Portfolio">
+  <meta name="twitter:description" content="[TAGLINE]">
+
+  Canonical:
+  <link rel="canonical" href="https://[USERNAME].github.io/[REPO]/">
+
+  Theme color:
+  <meta name="theme-color" content="#04060d">
+
+  Favicon: SVG favicon using initials
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 12 — QUALITY CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Before declaring complete, verify ALL of the following:
+
+VISUAL:
+  [ ] 60fps stable on Chrome desktop (verify with DevTools Performance tab)
+  [ ] No layout shift (CLS = 0) on load
+  [ ] All text is readable (contrast ≥ 4.5:1 for body, ≥ 3:1 for decorative)
+  [ ] Film grain visible but not distracting
+  [ ] Cursor changes correctly in all states
+  [ ] All scramble animations complete properly (no stuck chars)
+  [ ] Three.js canvas is behind all HTML content (z-index correct)
+  [ ] No z-fighting or visual artifacts in 3D scenes
+
+INTERACTION:
+  [ ] Sound toggle works and persists across reload
+  [ ] All buttons trigger correct sounds
+  [ ] Magnetic cursor effect works on all CTA buttons
+  [ ] GitHub API loads projects (test with real username)
+  [ ] Konami code easter egg works
+  [ ] Terminal section accepts input and submits
+  [ ] All nav links scroll to correct section
+  [ ] Back-to-top works
+
+PERFORMANCE:
+  [ ] Lighthouse Performance score ≥ 85
+  [ ] First Contentful Paint ≤ 2s
+  [ ] Three.js properly paused when tab is hidden (visibilitychange)
+  [ ] No memory leaks (Three.js objects disposed when offscreen)
+  [ ] Mobile: no horizontal overflow, touch interactions work
+  [ ] Reduced motion mode: tested and functional
+
+DEPLOYMENT:
+  [ ] GitHub Actions workflow runs green
+  [ ] Site loads correctly at https://[USERNAME].github.io/[REPO]/
+  [ ] .nojekyll file present
+  [ ] All CDN links use https
+  [ ] No console errors in production
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 13 — BUILD ORDER (implement in this sequence)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Build in this order to catch issues early:
+
+PHASE 1 — Foundation:
+  1. index.html skeleton with all sections as empty divs
+  2. style.css with CSS variables, resets, base typography
+  3. GitHub Actions deploy.yml + .nojekyll
+  4. Verify deployment pipeline works with placeholder content
+
+PHASE 2 — Core Systems:
+  5. sound.js — audio engine (test each SFX)
+  6. scramble.js — text scramble engine (test on sample text)
+  7. cursor.js — custom cursor (test all states)
+  8. Film grain + scan line overlay
+
+PHASE 3 — 3D Foundation:
+  9. particles.js — background particle field
+  10. Verify Three.js scene composites correctly behind HTML
+
+PHASE 4 — Sections:
+  11. Loading screen
+  12. Navigation + progress bar
+  13. Hero section (most complex — get this perfect)
+  14. About section
+  15. Projects section + GitHub API
+  16. Experience section
+  17. Skills globe
+  18. Contact terminal
+  19. Footer + easter eggs
+
+PHASE 5 — Polish:
+  20. ScrollTrigger animations on all sections
+  21. Section transition glitches
+  22. Mobile responsiveness
+  23. Reduced motion support
+  24. SEO meta tags
+  25. Final performance audit
+
+================================================================================
+END OF MASTER PROMPT
+================================================================================
