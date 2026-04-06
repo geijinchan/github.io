@@ -16,7 +16,7 @@ concurrency:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   PORT: "5173"
-  BASE_PATH: "/"
+  BASE_PATH: "./"
 
 jobs:
   build:
