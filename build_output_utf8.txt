@@ -1,0 +1,43 @@
+﻿
+> workspace@0.0.0 build C:\Users\user\Desktop\Projects\Portfolio
+> pnpm run typecheck && pnpm -r --if-present run build
+
+
+> workspace@0.0.0 typecheck C:\Users\user\Desktop\Projects\Portfolio
+> pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+
+
+> workspace@0.0.0 typecheck:libs C:\Users\user\Desktop\Projects\Portfolio
+> tsc --build
+
+npx : 'tsc' is not 
+recognized as an 
+internal or external 
+command,
+At line:1 char:1
++ npx --yes pnpm run 
+build > 
+build_output.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~
+    + CategoryInfo    
+          : 
+NotSpecified: ('    
+tsc' is not re...tern 
+   al 
+command,:String) [    
+], RemoteException
+    + 
+FullyQualifiedError   
+ Id : 
+NativeCommandErr    or
+ 
+operable program or 
+batch file.
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
+ΓÇëWARNΓÇë  Local package.json exists, but node_modules missing, did you mean to install?
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
+ΓÇëWARNΓÇë  Local package.json exists, but node_modules missing, did you mean to install?
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
+ΓÇëWARNΓÇë  Local package.json exists, but node_modules missing, did you mean to install?
