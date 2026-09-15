@@ -70,7 +70,7 @@ export default function About() {
               backgroundImage: 'linear-gradient(180deg, #3ecfb2 0%, rgba(62,207,178,0.1) 100%)',
             }}
           >
-            2+
+            3+
           </div>
           <p className="text-overline">YEARS OF EXPERIENCE</p>
           <div className="w-16 h-[1px] bg-border-accent mt-2" />
@@ -87,7 +87,7 @@ export default function About() {
             className="font-sans font-[300] leading-relaxed"
             style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)', color: 'var(--text-primary)' }}
           >
-            Results-driven Data Scientist with 2 years of experience turning raw data into production-grade AI.
+            Results-driven Data Scientist with 3 years of experience turning raw data into production-grade AI.
             I architect serverless platforms on AWS, build enterprise RAG pipelines with Azure AI Foundry,
             and design reinforcement learning systems that trade smarter. From training neural networks
             to deploying LLMs, I bridge the gap between cutting-edge research and real-world impact.
